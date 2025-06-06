@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - GiftCard Store{% endblock %}
+{% block description %}Get in touch with GiftCard Store. We're here to help with any questions about gift cards, purchases, or our services.{% endblock %}
+
+{% block content %}
+<!-- Contact Hero Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-5 fw-bold mb-4">Contact Us</h1>
+                <p class="lead text-muted">
+                    We're here to help! Get in touch with any questions about our gift cards or services.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-envelope me-2"></i>Send Us a Message
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="POST" action="{{ url_for('contact') }}">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject *</label>
+                                <select class="form-select" id="subject" name="subject" required>
+                                    <option value="">Choose a subject...</option>
+                                    <option value="General Inquiry">General Inquiry</option>
+                                    <option value="Gift Card Question">Gift Card Question</option>
+                                    <option value="Purchase Support">Purchase Support</option>
+                                    <option value="Technical Issue">Technical Issue</option>
+                                    <option value="Partnership Inquiry">Partnership Inquiry</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="message" name="message" rows="6" 
+                                         placeholder="Please describe your question or concern in detail..." required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Information -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Other Ways to Reach Us</h2>
+                    <p class="text-muted">Choose the method that works best for you</p>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="contact-method text-center p-4 bg-white rounded shadow-sm h-100">
+                            <div class="icon-box mb-3">
+                                <i class="fas fa-envelope fa-3x text-primary"></i>
+                            </div>
+                            <h5>Email Support</h5>
+                            <p class="text-muted mb-3">Send us an email anytime</p>
+                            <a href="mailto:support@giftcardstore.com" class="text-primary text-decoration-none">
+                                support@giftcardstore.com
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="contact-method text-center p-4 bg-white rounded shadow-sm h-100">
+                            <div class="icon-box mb-3">
+                                <i class="fas fa-phone fa-3x text-primary"></i>
+                            </div>
+                            <h5>Phone Support</h5>
+                            <p class="text-muted mb-3">Call us during business hours</p>
+                            <a href="tel:1-800-GIFTCARD" class="text-primary text-decoration-none">
+                                1-800-GIFTCARD
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="contact-method text-center p-4 bg-white rounded shadow-sm h-100">
+                            <div class="icon-box mb-3">
+                                <i class="fas fa-clock fa-3x text-primary"></i>
+                            </div>
+                            <h5>Response Time</h5>
+                            <p class="text-muted mb-3">We typically respond within</p>
+                            <span class="text-primary fw-bold">24 hours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Frequently Asked Questions</h2>
+                    <p class="text-muted">Quick answers to common questions</p>
+                </div>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse1">
+                                How do I purchase a gift card?
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Simply browse our gift card selection, click on the card you want to purchase, 
+                                and you'll be redirected to our secure partner site (GiftCards.com) to complete 
+                                your transaction. You'll receive your digital gift card via email instantly.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse2">
+                                How quickly will I receive my gift card?
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Digital gift cards are delivered instantly to your email address after purchase. 
+                                Check your inbox (and spam folder) within a few minutes of completing your order.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse3">
+                                Are my transactions secure?
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! All transactions are processed through our trusted partner GiftCards.com, 
+                                which uses industry-standard encryption and security measures to protect your 
+                                personal and payment information.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse4">
+                                Do gift cards expire?
+                            </button>
+                        </h2>
+                        <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Most of our gift cards never expire, but expiration policies vary by brand. 
+                                Check the specific terms for each gift card before purchasing, or contact us 
+                                if you need clarification.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq5">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse5">
+                                Can I return or exchange a gift card?
+                            </button>
+                        </h2>
+                        <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Gift card return and exchange policies vary by brand and are handled by our 
+                                partner GiftCards.com. Please review the specific terms of service for each 
+                                gift card or contact their customer support directly.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Form validation and enhancement
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', function(e) {
+        // Add loading state to submit button
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+        submitBtn.disabled = true;
+    });
+});
+</script>
+{% endblock %}

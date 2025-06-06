@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if current_category %}
+        {{ current_category }} Gift Cards - GiftCard Store
+    {% elif search_query %}
+        Search Results for "{{ search_query }}" - GiftCard Store
+    {% else %}
+        Gift Card Categories - GiftCard Store
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% if current_category %}
+                    <h1 class="display-5 fw-bold">{{ current_category }} Gift Cards</h1>
+                    <p class="lead text-muted">Discover the best gift cards in {{ current_category }}</p>
+                {% elif search_query %}
+                    <h1 class="display-5 fw-bold">Search Results</h1>
+                    <p class="lead text-muted">Results for "{{ search_query }}"</p>
+                {% else %}
+                    <h1 class="display-5 fw-bold">Gift Card Categories</h1>
+                    <p class="lead text-muted">Browse gift cards by category</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Results or Category Content -->
+{% if gift_cards is defined %}
+    <section class="py-5">
+        <div class="container">
+            {% if error %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>{{ error }}
+                </div>
+            {% elif gift_cards %}
+                <div class="row g-4">
+                    {% for card in gift_cards %}
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="card gift-card h-100 shadow-sm">
+                                {% if card.Image_URL %}
+                                    <img src="{{ card.Image_URL }}" class="card-img-top" alt="{{ card.Name }}" style="height: 200px; object-fit: cover;">
+                                {% else %}
+                                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                        <i class="fas fa-gift fa-3x text-muted"></i>
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">{{ card.Name }}</h5>
+                                    <p class="card-text text-muted small">{{ card.Brand }}</p>
+                                    <p class="card-text flex-grow-1">{{ card.Description[:100] }}{% if card.Description|length > 100 %}...{% endif %}</p>
+                                    
+                                    {% if card.Values %}
+                                        <div class="mb-3">
+                                            <small class="text-primary fw-bold">Values: {{ card.Values }}</small>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <div class="mt-auto">
+                                        <a href="{{ url_for('product_detail', product_id=card.ID) }}" 
+                                           class="btn btn-primary w-100">
+                                            <i class="fas fa-eye me-2"></i>View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-4x text-muted mb-3"></i>
+                    {% if search_query %}
+                        <h4 class="text-muted">No results found for "{{ search_query }}"</h4>
+                        <p class="text-muted">Try searching with different keywords or browse our categories below.</p>
+                    {% else %}
+                        <h4 class="text-muted">No gift cards found in this category</h4>
+                        <p class="text-muted">Please check back later or explore other categories.</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}
+
+<!-- Categories Grid -->
+{% if categories is defined and not gift_cards %}
+    <section class="py-5">
+        <div class="container">
+            {% if error %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>{{ error }}
+                </div>
+            {% elif categories %}
+                <div class="row g-4">
+                    {% for category in categories %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card category-card h-100 border-0 shadow-sm">
+                                {% if category.Image_URL %}
+                                    <img src="{{ category.Image_URL }}" class="card-img-top" alt="{{ category.Name }}" style="height: 200px; object-fit: cover;">
+                                {% else %}
+                                    <div class="card-img-top bg-primary d-flex align-items-center justify-content-center" style="height: 200px;">
+                                        <i class="fas fa-tags fa-3x text-white"></i>
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ category.Name }}</h5>
+                                    <p class="card-text text-muted">{{ category.Description or 'Discover amazing gift cards in this category' }}</p>
+                                    
+                                    {% if category.gift_cards %}
+                                        <p class="text-primary mb-3">
+                                            <i class="fas fa-gift me-2"></i>{{ category.gift_cards|length }} gift cards available
+                                        </p>
+                                        
+                                        <!-- Preview of gift cards in category -->
+                                        <div class="row g-2 mb-3">
+                                            {% for card in category.gift_cards[:4] %}
+                                                <div class="col-6">
+                                                    <div class="card bg-light border-0">
+                                                        <div class="card-body p-2 text-center">
+                                                            <small class="text-muted">{{ card.Brand }}</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <a href="{{ url_for('category_detail', category_name=category.Name) }}" 
+                                       class="btn btn-primary w-100">
+                                        <i class="fas fa-arrow-right me-2"></i>Explore Category
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-tags fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">No categories available</h4>
+                    <p class="text-muted">Please check back later for updated categories.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}
+
+<!-- Popular Brands Section -->
+{% if not current_category and not search_query %}
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Popular Brands</h2>
+                <p class="text-muted">Shop gift cards from these trusted brands</p>
+            </div>
+            
+            <div class="row g-3">
+                <div class="col-lg-2 col-md-3 col-4">
+                    <div class="brand-logo bg-white p-3 rounded shadow-sm text-center">
+                        <img src="https://pixabay.com/get/g0756e3271c8f50575e021a606fa02f73fcae6c50218ee8034e287979ea68c2c2166d6d4916a4470b8ea157ec4cb7c9c1c3403844d12b990a146253ba5dc653bf_1280.jpg" 
+                             alt="Brand Logo" class="img-fluid" style="max-height: 40px;">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4">
+                    <div class="brand-logo bg-white p-3 rounded shadow-sm text-center">
+                        <img src="https://pixabay.com/get/ga4f947b0acaf9578be67f4c5e5ecfa147d4cda86399b5aeeb39fc39cb7dbff4835d59e9a40aa9fadaaa9d5a6c9fa854b9b300f65e8d9ead6991823aedaad7f45_1280.jpg" 
+                             alt="Brand Logo" class="img-fluid" style="max-height: 40px;">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4">
+                    <div class="brand-logo bg-white p-3 rounded shadow-sm text-center">
+                        <img src="https://pixabay.com/get/g94bff3a9ef8f354bdd287e936b88440df561ed1fb1a0388a31599b50db80d8bfbac22fe77dd6a9a093d00e126c41ac018c71d0597f2b2ae92181ddeeaec0e206_1280.jpg" 
+                             alt="Brand Logo" class="img-fluid" style="max-height: 40px;">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4">
+                    <div class="brand-logo bg-white p-3 rounded shadow-sm text-center">
+                        <img src="https://pixabay.com/get/g25f7c842e13171405bd876b0143a68c486fcf08b75dc1e2480d9f278c6504d093834493f72c0a86a78459fde899565f30f2176019e3859660e2b0eb707107a4a_1280.jpg" 
+                             alt="Brand Logo" class="img-fluid" style="max-height: 40px;">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4">
+                    <div class="brand-logo bg-white p-3 rounded shadow-sm text-center">
+                        <img src="https://pixabay.com/get/gb51884cd9b340e14ea3201c139d5bf4540de34f8b831771865c0a1fb8a0c19645f6fb5cdc7cd6a04392f7ed87ce917e2c7c938766ee889bb71913bacc2562d89_1280.jpg" 
+                             alt="Brand Logo" class="img-fluid" style="max-height: 40px;">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4">
+                    <div class="brand-logo bg-white p-3 rounded shadow-sm text-center">
+                        <img src="https://pixabay.com/get/g4dbd0925eeffa2d46fbd48fdf6a4187fb559673a0de7e5cf9d4937705fd4950a3790a6d25b2de6b3a390ed68f605a49d7e68f4b374e45dbaa1b1e9818736b782_1280.jpg" 
+                             alt="Brand Logo" class="img-fluid" style="max-height: 40px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+{% endblock %}
