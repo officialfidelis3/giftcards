@@ -1,0 +1,80 @@
+GiftCard Affiliate Website - Project Prompt
+Objective:
+Create a responsive and user-friendly gift card affiliate website that acts as an intermediary for users to purchase gift cards via GiftCards.com. The website will feature various categories of gift cards, integrate affiliate links, and offer a seamless purchasing experience.
+
+Key Features:
+Homepage:
+
+Hero Section: Show popular brands (Amazon, Target, etc.) with eye-catching visuals.
+
+Search Bar: Allow users to search for gift cards by store name or category (e.g., shopping, entertainment, food).
+
+Navigation: Links to categories like "Top Gift Cards," "New Arrivals," "Holiday Specials," etc.
+
+Categories Page:
+
+Display gift card categories: e.g., Online Shopping, Restaurants, Entertainment (Netflix, Spotify), etc.
+
+Each category should have thumbnails of available brands with short descriptions and prices.
+
+Provide an affiliate link that redirects users to giftcards.com to complete the purchase.
+
+Product Detail Page:
+
+For each gift card, display:
+
+Name of the retailer/brand.
+
+Gift card value options (e.g., $25, $50, $100).
+
+A description of the card and its use case.
+
+Affiliate link to purchase via giftcards.com.
+
+Customer reviews (optional).
+
+Affiliate Link Integration:
+
+Every product should include an affiliate link from giftcards.com with proper tracking for commissions.
+
+You’ll need to integrate an affiliate API or manually insert your affiliate tracking code in the link.
+
+Checkout Page:
+
+Users should be able to proceed to giftcards.com via the affiliate link for a seamless checkout experience.
+
+Optionally, show a confirmation message or page after they click the link, reminding them that the purchase helps support your site (for affiliate tracking purposes).
+
+Additional Pages:
+
+About Us: Tell visitors about your mission and how the affiliate program works.
+
+Contact Us: Form to reach out for support or inquiries.
+
+SEO & Mobile Optimization:
+
+Ensure the website is search engine optimized for terms like "buy gift cards online," "best gift cards," etc.
+
+Make sure the website is mobile-friendly for users to shop from their phones or tablets.
+
+Admin Dashboard (optional for advanced users):
+
+Track the number of visits to the site and which gift cards are most popular.
+
+Display clicks on affiliate links for performance tracking.
+
+Tech Stack:
+Frontend: HTML, CSS, JavaScript (React for dynamic features if desired)
+
+Backend: Replit’s built-in server with Node.js or Flask (if you need a backend to manage dynamic content).
+
+Affiliate Integration: Use GiftCards.com affiliate program and incorporate API or links for tracking purchases.
+
+Optional: Use a database like Firebase or SQLite if you want to store user preferences or analytics.
+
+Design Considerations:
+Clean, simple design with an easy-to-navigate interface.
+
+Attractive banner images for popular gift card brands.
+
+Clear call-to-action buttons, such as “Buy Now” or “Shop Now.”
