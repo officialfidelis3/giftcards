@@ -80,13 +80,16 @@ class SheetsService:
                 ]
             }
             
-            existing_worksheets = [ws.title for ws in self.spreadsheet.worksheets()]
-            
-            for sheet_name, headers in worksheets.items():
-                if sheet_name not in existing_worksheets:
-                    worksheet = self.spreadsheet.add_worksheet(title=sheet_name, rows=1000, cols=len(headers))
-                    worksheet.insert_row(headers, 1)
-                    logging.info(f"Created worksheet: {sheet_name}")
+            if self.spreadsheet:
+                existing_worksheets = [ws.title for ws in self.spreadsheet.worksheets()]
+                
+                for sheet_name, headers in worksheets.items():
+                    if sheet_name not in existing_worksheets:
+                        worksheet = self.spreadsheet.add_worksheet(title=sheet_name, rows=1000, cols=len(headers))
+                        worksheet.insert_row(headers, 1)
+                        logging.info(f"Created worksheet: {sheet_name}")
+            else:
+                logging.info("Google Sheets not available - skipping worksheet initialization")
         
         except Exception as e:
             logging.error(f"Error initializing worksheets: {e}")
