@@ -333,6 +333,54 @@ class SheetsService:
             logging.error(f"Error adding gift card: {e}")
             return False
     
+    def update_gift_card(self, gift_card_data: Dict) -> bool:
+        """Update an existing gift card (admin function)"""
+        try:
+            if not self.spreadsheet:
+                # For demo purposes, we'll simulate success since we can't update demo data
+                logging.info("Demo mode: Gift card update simulated")
+                return True
+            
+            worksheet = self.spreadsheet.worksheet('gift_cards')
+            records = worksheet.get_all_records()
+            
+            # Find the row to update
+            product_id = str(gift_card_data.get('id'))
+            row_to_update = None
+            
+            for i, record in enumerate(records):
+                if str(record.get('ID', '')) == product_id:
+                    row_to_update = i + 2  # +2 because enumerate starts at 0 and sheet rows start at 1, plus header row
+                    break
+            
+            if row_to_update:
+                # Update the row
+                updated_data = [
+                    product_id,
+                    gift_card_data.get('name', ''),
+                    gift_card_data.get('brand', ''),
+                    gift_card_data.get('category', ''),
+                    gift_card_data.get('description', ''),
+                    gift_card_data.get('image_url', ''),
+                    gift_card_data.get('values', ''),
+                    gift_card_data.get('affiliate_url', ''),
+                    gift_card_data.get('slug', ''),
+                    gift_card_data.get('popular', 'false'),
+                    gift_card_data.get('active', 'true'),
+                    records[row_to_update - 2].get('Created_Date', datetime.now().strftime('%Y-%m-%d'))  # Keep original creation date
+                ]
+                
+                # Update the entire row
+                worksheet.update(f'A{row_to_update}:L{row_to_update}', [updated_data])
+                return True
+            else:
+                logging.error(f"Gift card with ID {product_id} not found")
+                return False
+        
+        except Exception as e:
+            logging.error(f"Error updating gift card: {e}")
+            return False
+    
     def get_analytics_data(self) -> Dict:
         """Get analytics data for admin dashboard"""
         try:

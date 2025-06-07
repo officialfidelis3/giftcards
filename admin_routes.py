@@ -98,6 +98,32 @@ def manage_products():
             except Exception as e:
                 logging.error(f"Error adding gift card: {e}")
                 flash('Error adding gift card', 'error')
+        
+        elif action == 'edit':
+            try:
+                product_id = request.form.get('product_id')
+                gift_card_data = {
+                    'id': product_id,
+                    'name': request.form.get('name'),
+                    'brand': request.form.get('brand'),
+                    'category': request.form.get('category'),
+                    'description': request.form.get('description'),
+                    'image_url': request.form.get('image_url'),
+                    'values': request.form.get('values'),
+                    'affiliate_url': request.form.get('affiliate_url'),
+                    'slug': request.form.get('slug'),
+                    'popular': 'true' if request.form.get('popular') else 'false',
+                    'active': 'true' if request.form.get('active') else 'false'
+                }
+                
+                if sheets_service.update_gift_card(gift_card_data):
+                    flash('Gift card updated successfully!', 'success')
+                else:
+                    flash('Failed to update gift card', 'error')
+            
+            except Exception as e:
+                logging.error(f"Error updating gift card: {e}")
+                flash('Error updating gift card', 'error')
     
     try:
         # Get all gift cards and categories for the management page

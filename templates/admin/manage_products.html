@@ -72,7 +72,8 @@
                                            class="btn btn-outline-primary" target="_blank" title="View">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <button class="btn btn-outline-warning" title="Edit">
+                                        <button class="btn btn-outline-warning" title="Edit" 
+                                                onclick="editProduct({{ card.ID }}, '{{ card.Name }}', '{{ card.Brand }}', '{{ card.Category }}', '{{ card.Description }}', '{{ card.Image_URL }}', '{{ card.Values }}', '{{ card.Affiliate_URL }}', '{{ card.Slug }}', '{{ card.Popular }}', '{{ card.Active }}')">
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <button class="btn btn-outline-danger" title="Delete">
@@ -95,6 +96,101 @@
                 </button>
             </div>
         {% endif %}
+    </div>
+</div>
+
+<!-- Edit Product Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-edit me-2"></i>Edit Gift Card
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            
+            <form method="POST" action="{{ url_for('admin.manage_products') }}">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="product_id" id="edit_product_id">
+                
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_name" class="form-label">Gift Card Name *</label>
+                            <input type="text" class="form-control" id="edit_name" name="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_brand" class="form-label">Brand *</label>
+                            <input type="text" class="form-control" id="edit_brand" name="brand" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_category" class="form-label">Category *</label>
+                            <select class="form-select" id="edit_category" name="category" required>
+                                <option value="">Choose category...</option>
+                                {% for cat in categories %}
+                                    <option value="{{ cat.Name }}">{{ cat.Name }}</option>
+                                {% endfor %}
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_values" class="form-label">Available Values</label>
+                            <input type="text" class="form-control" id="edit_values" name="values">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_description" class="form-label">Description</label>
+                        <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_image_url" class="form-label">Image URL</label>
+                        <input type="url" class="form-control" id="edit_image_url" name="image_url">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_affiliate_url" class="form-label">Affiliate URL</label>
+                        <input type="url" class="form-control" id="edit_affiliate_url" name="affiliate_url">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_slug" class="form-label">URL Slug</label>
+                        <input type="text" class="form-control" id="edit_slug" name="slug">
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="edit_popular" name="popular">
+                                <label class="form-check-label" for="edit_popular">
+                                    Mark as Popular
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="edit_active" name="active">
+                                <label class="form-check-label" for="edit_active">
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-save me-2"></i>Update Gift Card
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -249,26 +345,73 @@
 
 {% block admin_scripts %}
 <script>
+// Function to populate edit modal with product data
+function editProduct(id, name, brand, category, description, imageUrl, values, affiliateUrl, slug, popular, active) {
+    document.getElementById('edit_product_id').value = id;
+    document.getElementById('edit_name').value = name || '';
+    document.getElementById('edit_brand').value = brand || '';
+    document.getElementById('edit_category').value = category || '';
+    document.getElementById('edit_description').value = description || '';
+    document.getElementById('edit_image_url').value = imageUrl || '';
+    document.getElementById('edit_values').value = values || '';
+    document.getElementById('edit_affiliate_url').value = affiliateUrl || '';
+    document.getElementById('edit_slug').value = slug || '';
+    document.getElementById('edit_popular').checked = popular === 'true';
+    document.getElementById('edit_active').checked = active === 'true';
+    
+    // Show the modal
+    const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+    editModal.show();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Auto-generate slug from name
+    // Auto-generate slug from name (for add modal)
     const nameInput = document.getElementById('name');
     const slugInput = document.getElementById('slug');
     
-    nameInput.addEventListener('input', function() {
-        const slug = this.value
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-        slugInput.value = slug;
-    });
+    if (nameInput && slugInput) {
+        nameInput.addEventListener('input', function() {
+            const slug = this.value
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+            slugInput.value = slug;
+        });
+    }
     
-    // Form validation
-    const form = document.querySelector('#addProductModal form');
-    form.addEventListener('submit', function(e) {
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Adding...';
-        submitBtn.disabled = true;
-    });
+    // Auto-generate slug from name (for edit modal)
+    const editNameInput = document.getElementById('edit_name');
+    const editSlugInput = document.getElementById('edit_slug');
+    
+    if (editNameInput && editSlugInput) {
+        editNameInput.addEventListener('input', function() {
+            const slug = this.value
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+            editSlugInput.value = slug;
+        });
+    }
+    
+    // Form validation for add modal
+    const addForm = document.querySelector('#addProductModal form');
+    if (addForm) {
+        addForm.addEventListener('submit', function(e) {
+            const submitBtn = addForm.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Adding...';
+            submitBtn.disabled = true;
+        });
+    }
+    
+    // Form validation for edit modal
+    const editForm = document.querySelector('#editProductModal form');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            const submitBtn = editForm.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+            submitBtn.disabled = true;
+        });
+    }
 });
 </script>
 {% endblock %}
